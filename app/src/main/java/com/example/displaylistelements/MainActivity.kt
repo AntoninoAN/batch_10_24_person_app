@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.displaylistelements.databinding.ActivityMainBinding
 import com.example.displaylistelements.model.DTOPerson
 import com.example.displaylistelements.model.DataSourcePerson
+import com.example.displaylistelements.ui.DetailPersonFragment
 import com.example.displaylistelements.ui.PersonAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +29,9 @@ class MainActivity : AppCompatActivity() {
         //binding.listOfPersons.layoutManager = LinearLayoutManager(this)
         binding.listOfPersons.layoutManager = GridLayoutManager(this, 1)
         binding.listOfPersons.adapter =
-            PersonAdapter(DataSourcePerson.generateListOfPerson()) {
+            PersonAdapter(
+                DataSourcePerson.generateListOfPerson()
+            ) {
                 navigateToPersonDetailsScreen(it)
             }
 
@@ -46,6 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToPersonDetailsScreen(personDetails: DTOPerson) {
         Toast.makeText(this, personDetails.toString(), Toast.LENGTH_SHORT).show()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.detail_fragment_container, DetailPersonFragment.newInstance(personDetails))
+            .addToBackStack(null)
+            .commit()
     }
 }
 

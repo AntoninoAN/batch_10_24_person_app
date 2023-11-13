@@ -1,5 +1,6 @@
 package com.example.displaylistelements.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,8 +33,14 @@ class DetailPersonFragment : Fragment(){
             .inflate(inflater)
 
         arguments?.let {
-            it.getParcelable<DTOPerson>(PERSON_DETAILS)?.let {
-                setupUI(it)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(PERSON_DETAILS, DTOPerson::class.java)?.let { dtoPerson ->
+                    setupUI(dtoPerson)
+                }
+            } else {
+                it.getParcelable<DTOPerson>(PERSON_DETAILS)?.let { dtoPerson->
+                    setupUI(dtoPerson)
+                }
             }
         }
 
